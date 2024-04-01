@@ -1,17 +1,17 @@
 package duke.storage;
 
+import duke.command.DateTimeParser;
+import duke.task.*;
+import duke.exception.DukeException;
+
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-
-import duke.command.DateTimeParser;
-import duke.task.*;
 import java.time.LocalDateTime;
 import java.io.IOException;
-import duke.exception.DukeException;
 
 public class Storage {
     private static final String FILE_PATH = "./data/duke.txt";

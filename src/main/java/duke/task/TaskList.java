@@ -76,4 +76,21 @@ public class TaskList {
             System.out.println("    You dare invoke the invalid task number? Pathetic!");
         }
     }
+
+    public static void findTasksByKeyword(String keyword) {
+        boolean found = false;
+        int count = 1;
+        for (Task task : TaskList.taskList) {
+            if (task.getDescription().toLowerCase().contains(keyword.toLowerCase())) {
+                if (!found) {
+                    System.out.println("    Tasks containing keyword '" + keyword + "':");
+                    found = true;
+                }
+                System.out.println("        " + count++ + ". " + task);
+            }
+        }
+        if (!found) {
+            System.out.println("    No tasks containing keyword '" + keyword + "' found.");
+        }
+    }
 }

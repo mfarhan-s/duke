@@ -32,4 +32,8 @@ public class DukeException extends Exception {
     public static DukeException invalidDateTimeFormat() {
         return new DukeException("You ignorant fool! Enter date and time in the correct format: dd/mm/yyyy HHmm");
     }
+
+    public static DukeException invalidFindFormat() {
+        return new DukeException("Invalid format for 'find' command. Please specify a keyword.");
+    }
 }

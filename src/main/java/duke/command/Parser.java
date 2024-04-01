@@ -1,9 +1,11 @@
 package duke.command;
 
 import java.util.Scanner;
+
 import duke.task.*;
 import duke.ui.Ui;
 import duke.exception.DukeException;
+
 public class Parser {
     public static void executeCommand(String command) throws DukeException {
         String[] commandParts = command.split(" ", 2);
@@ -83,6 +85,14 @@ public class Parser {
                     }
                 } else {
                     DukeException.handleGracefulError(DukeException.invalidTaskNumber());
+                }
+                break;
+            case "find":
+                if (commandParts.length > 1) {
+                        String keyword = commandParts[1].trim();
+                        TaskList.findTasksByKeyword(keyword);
+                } else {
+                    DukeException.handleGracefulError(DukeException.invalidFindFormat());
                 }
                 break;
             default:
