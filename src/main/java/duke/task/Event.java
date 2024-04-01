@@ -8,8 +8,8 @@ import java.time.format.DateTimeFormatter;
 
 // enter format as "event <description> /from <dd/mm/yyyy HHmm> /to <dd/mm/yyyy HHmm>"
 public class Event extends Task {
-    private final LocalDateTime fromDateTime;
-    private final LocalDateTime toDateTime;
+    private LocalDateTime fromDateTime;
+    private LocalDateTime toDateTime;
 
     public Event(String description, LocalDateTime fromDateTime, LocalDateTime toDateTime) {
         super(description);
@@ -23,6 +23,14 @@ public class Event extends Task {
 
     public LocalDateTime getToDateTime() {
         return toDateTime;
+    }
+
+    public void setFromDateTime(LocalDateTime newFromDateTime) {
+        this.fromDateTime = newFromDateTime;
+    }
+
+    public void setToDateTime(LocalDateTime newToDateTime) {
+        this.toDateTime = newToDateTime;
     }
 
     public static Event createEventFromCommand(String command) {

@@ -4,6 +4,8 @@ import duke.exception.DukeException;
 import duke.ui.Ui;
 import duke.storage.Storage;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class TaskList {
@@ -53,10 +55,10 @@ public class TaskList {
             Task task = TaskList.taskList.get(taskNumber - 1);
             if (!task.isDone()) {
                 task.markAsDone();
-                System.out.println("    Hmph! I've smitten this task from the list:\n      " + task.toString());
+                System.out.println("    Hmph! I've smitten this task from the list:\n      " + task);
                 Storage.saveTasksToFile(TaskList.taskList);
             } else {
-                System.out.println("    Fool! This task has already been marked as done!\n      " + task.toString());
+                System.out.println("    Fool! This task has already been marked as done!\n      " + task);
             }
         } else {
             System.out.println("    Fool! That task number is beyond the realm of your pitiful list!");
@@ -67,10 +69,10 @@ public class TaskList {
             Task task = TaskList.taskList.get(taskNumber - 1);
             if (task.isDone()) {
                 task.unmarkAsDone();
-                System.out.println("    Bah! I've restored this task to its pathetic existence:\n      " + task.toString());
+                System.out.println("    Bah! I've restored this task to its pathetic existence:\n      " + task);
                 Storage.saveTasksToFile(TaskList.taskList);
             } else {
-                System.out.println("    Fool! This task is already in its wretched, incomplete state!\n      " + task.toString());
+                System.out.println("    Fool! This task is already in its wretched, incomplete state!\n      " + task);
             }
         } else {
             System.out.println("    You dare invoke the invalid task number? Pathetic!");
@@ -91,6 +93,37 @@ public class TaskList {
         }
         if (!found) {
             System.out.println("    No tasks containing keyword '" + keyword + "' found.");
+        }
+    }
+
+    public static void postponeTask(int taskNumber, LocalDateTime newDueDateTime) throws DukeException {
+        if (isValidTaskNumber(taskNumber, taskList)) {
+            Task task = taskList.get(taskNumber - 1);
+            if (task instanceof Deadline) {
+                Deadline deadlineTask = (Deadline) task;
+                deadlineTask.setBy(newDueDateTime);
+                System.out.println("    Task has been postponed successfully:\n" +
+                                   "   " + taskNumber + ". " + deadlineTask);
+                Storage.saveTasksToFile(taskList);
+            } else if (task instanceof Event) {
+                Event eventTask = (Event) task;
+                LocalDateTime oldStartDateTime = eventTask.getFromDateTime();
+                LocalDateTime oldEndDateTime = eventTask.getToDateTime();
+
+                // Calculate the duration between old start time and end time
+                Duration duration = Duration.between(oldStartDateTime, oldEndDateTime);
+
+                // Set new end time by adding the duration to the new start time
+                LocalDateTime newEndDateTime = newDueDateTime.plus(duration);
+
+                // Update event task with new start and end times
+                eventTask.setFromDateTime(newDueDateTime);
+                eventTask.setToDateTime(newEndDateTime);
+
+                System.out.println("    Event task has been postponed successfully:\n" +
+                                   "   " + taskNumber + ". " + eventTask);
+                Storage.saveTasksToFile(taskList);
+            }
         }
     }
 }

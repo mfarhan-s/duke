@@ -20,6 +20,10 @@ public class Deadline extends Task {
         return byDateTime;
     }
 
+    public void setBy(LocalDateTime newByDateTime) {
+        this.byDateTime = newByDateTime;
+    }
+
     public static Deadline createDeadlineFromCommand(String command) {
         String prefix = "deadline";
         String byKeyword = "/by";
