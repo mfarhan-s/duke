@@ -36,4 +36,8 @@ public class DukeException extends Exception {
     public static DukeException invalidFindFormat() {
         return new DukeException("Invalid format for 'find' command. Please specify a keyword.");
     }
+
+    public static DukeException invalidSnoozeFormat() {
+        return new DukeException("Invalid format for 'snooze' command.");
+    }
 }

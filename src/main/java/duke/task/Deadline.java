@@ -16,6 +16,10 @@ public class Deadline extends Task {
         this.byDateTime = byDateTime;
     }
 
+    public void setBy (LocalDateTime newByDateTime) {
+        this.byDateTime = newByDateTime;
+    }
+
     public LocalDateTime getBy() {
         return byDateTime;
     }
