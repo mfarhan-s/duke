@@ -4,9 +4,7 @@ import duke.exception.DukeException;
 import duke.ui.Ui;
 import duke.storage.Storage;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.time.Duration;
 
 public class TaskList {
     public static ArrayList<Task> taskList = new ArrayList<>();
@@ -93,37 +91,6 @@ public class TaskList {
         }
         if (!found) {
             System.out.println("    No tasks containing keyword '" + keyword + "' found.");
-        }
-    }
-
-    public static void postponeTask(int taskNumber, LocalDateTime newDueDateTime) throws DukeException {
-        if (isValidTaskNumber(taskNumber, taskList)) {
-            Task task = taskList.get(taskNumber - 1);
-            if (task instanceof Deadline) {
-                Deadline deadlineTask = (Deadline) task;
-                deadlineTask.setBy(newDueDateTime);
-                System.out.println("    Task has been postponed successfully: " + taskNumber + ". " + deadlineTask);
-                Storage.saveTasksToFile(taskList);
-            } else if (task instanceof Event) {
-                Event eventTask = (Event) task;
-                LocalDateTime oldStartDateTime = eventTask.getFromDateTime();
-                LocalDateTime oldEndDateTime = eventTask.getToDateTime();
-
-                // Calculate the duration between old start time and end time
-                Duration duration = Duration.between(oldStartDateTime, oldEndDateTime);
-
-                // Set new end time by adding the duration to the new start time
-                LocalDateTime newEndDateTime = newDueDateTime.plus(duration);
-
-                // Update event task with new start and end times
-                eventTask.setFromDateTime(newDueDateTime);
-                eventTask.setToDateTime(newEndDateTime);
-
-                System.out.println("    Event task has been snoozed/postponed successfully: " + taskNumber + ". " + eventTask);
-                Storage.saveTasksToFile(taskList);
-            }
-        } else {
-            System.out.println("Invalid task number!");
         }
     }
 }

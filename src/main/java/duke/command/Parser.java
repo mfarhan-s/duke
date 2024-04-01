@@ -1,6 +1,5 @@
 package duke.command;
 
-import java.time.LocalDateTime;
 import java.util.Scanner;
 
 import duke.task.*;
@@ -9,7 +8,7 @@ import duke.exception.DukeException;
 
 public class Parser {
     public static void executeCommand(String command) throws DukeException {
-        String[] commandParts = command.split(" ", 3);
+        String[] commandParts = command.split(" ", 2);
 
         switch (commandParts[0].toLowerCase()) {
             case "list":
@@ -96,22 +95,6 @@ public class Parser {
                     DukeException.handleGracefulError(DukeException.invalidFindFormat());
                 }
                 break;
-            case "postpone":
-                if (commandParts.length > 2) {
-                    try {
-                        int taskNumber = Integer.parseInt(commandParts[1]);
-                        LocalDateTime newDueDateTime = DateTimeParser.parseDateTime(commandParts[2]);
-                        TaskList.postponeTask(taskNumber, newDueDateTime);
-                    } catch (NumberFormatException e) {
-                        DukeException.handleGracefulError(DukeException.invalidTaskNumber());
-                    } catch (DukeException e) {
-                        throw new DukeException("Error: " + e.getMessage());
-                    }
-                } else {
-                    DukeException.handleGracefulError(DukeException.invalidSnoozeFormat());
-                }
-                break;
-
             default:
                 TaskList.addTask(new Task(command));
         }

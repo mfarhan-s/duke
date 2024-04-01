@@ -8,7 +8,7 @@ import duke.task.TaskList;
 import duke.storage.Storage;
 
 public class Ui {
-    private static final String HORIZONTAL_LINE = "    ----------------------------------------------------------------";
+    private static final String HORIZONTAL_LINE = "    -------------------------------------------------";
 
     public static void greetUser() {
         System.out.println("    Greetings, mortal! I am Balrog, the fiery demon.");
