@@ -13,9 +13,22 @@ import java.util.List;
 import java.time.LocalDateTime;
 import java.io.IOException;
 
+/**
+ * Represents the storage utility for saving and loading tasks.
+ * Manages the reading and writing of tasks to a file.
+ */
 public class Storage {
+    /**
+     * The file path for storing tasks.
+     */
     private static final String FILE_PATH = "./data/duke.txt";
 
+    /**
+     * Saves the list of tasks to a file.
+     *
+     * @param taskList The list of tasks to save.
+     * @throws DukeException If there is an error while saving tasks to the file.
+     */
     public static void saveTasksToFile(ArrayList<Task> taskList) throws DukeException {
         try {
             Path filePath = Paths.get(FILE_PATH);
@@ -30,6 +43,12 @@ public class Storage {
         }
     }
 
+    /**
+     * Loads tasks from a file into a list of tasks.
+     *
+     * @return The list of tasks loaded from the file.
+     * @throws DukeException If there is an error while loading tasks from the file.
+     */
     public static ArrayList<Task> loadTasksFromFile() throws DukeException {
         ArrayList<Task> loadedTasks = new ArrayList<>();
         try {
@@ -49,6 +68,12 @@ public class Storage {
         return loadedTasks;
     }
 
+    /**
+     * Creates necessary directories if they do not exist.
+     *
+     * @param filePath The file path.
+     * @throws DukeException If there is an error while creating directories.
+     */
     private static void createDirectoriesIfNeeded(Path filePath) throws DukeException {
         Path directoryPath = filePath.getParent();
         if (!Files.exists(directoryPath)) {
@@ -60,6 +85,12 @@ public class Storage {
         }
     }
 
+    /**
+     * Creates the file if it does not exist.
+     *
+     * @param filePath The file path.
+     * @throws DukeException If there is an error while creating the file.
+     */
     private static void createFileIfNeeded(Path filePath) throws DukeException {
         if (!Files.exists(filePath)) {
             try {
@@ -69,6 +100,14 @@ public class Storage {
             }
         }
     }
+
+    /**
+     * Converts a task object to a string representation for storing in the file.
+     *
+     * @param task The task object.
+     * @return The string representation of the task for storing in the file.
+     * @throws DukeException If there is an error while converting the task to string.
+     */
     private static String taskToFileString(Task task) throws DukeException {
         if (task instanceof ToDo) {
             return String.format("T | %d | %s", task.isDone() ? 1 : 0, task.getDescription());
@@ -86,6 +125,13 @@ public class Storage {
         }
     }
 
+    /**
+     * Converts a string representation from the file to a task object.
+     *
+     * @param fileString The string representation from the file.
+     * @return The task object created from the string representation.
+     * @throws DukeException If there is an error while converting the string to task.
+     */
     private static Task fileStringToTask(String fileString) throws DukeException {
         String[] fields = fileString.split(" \\| ");
         if (fields.length < 3) {

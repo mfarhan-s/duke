@@ -7,7 +7,16 @@ import duke.task.*;
 import duke.ui.Ui;
 import duke.exception.DukeException;
 
+/**
+ * Represents a parser for user commands.
+ * Parses user commands and executes corresponding actions.
+ */
 public class Parser {
+    /**
+     * Executes the provided command.
+     *
+     * @param command The command to execute.
+     */
     public static void executeCommand(String command) {
         try {
             String[] commandParts = command.split(" ", 3);
@@ -120,7 +129,11 @@ public class Parser {
             Ui.displayMessage(e.getMessage());
         }
     }
-        public static void runDuke() throws DukeException {
+
+    /**
+     * Runs the Duke application by taking user input and executing commands until the user exits.
+     */
+    public static void runDuke() {
         String userInput;
         Scanner in = new Scanner(System.in);
 

@@ -8,9 +8,21 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
+/**
+ * Represents a list of tasks.
+ * Manages tasks and provides methods to add, delete, mark as done, etc.
+ */
 public class TaskList {
+    /**
+     * The list of tasks.
+     */
     public static ArrayList<Task> taskList = new ArrayList<>();
 
+    /**
+     * Reads tasks from a file and loads them into the task list.
+     *
+     * @throws DukeException If there is an error while reading tasks from the file.
+     */
     public static void readTasksFromFile() throws DukeException {
         ArrayList<Task> loadedTasks = Storage.loadTasksFromFile();
         if (!loadedTasks.isEmpty()) {
@@ -20,12 +32,22 @@ public class TaskList {
         }
     }
 
+    /**
+     * Adds a task to the task list and saves tasks to file.
+     *
+     * @param task The task to be added.
+     * @throws DukeException If there is an error while saving tasks to file.
+     */
     public static void addTask(Task task) throws DukeException {
         taskList.add(task);
         Task.echoUserCommand(task);
         System.out.println("    Now you have " + taskList.size() + " task(s) in your list.");
         Storage.saveTasksToFile(taskList);
     }
+
+    /**
+     * Displays the list of tasks.
+     */
     public static void displayList() {
         if (taskList.isEmpty()) {
             System.out.println("    Your feeble Task List is Empty!");
@@ -37,6 +59,14 @@ public class TaskList {
         }
         Ui.printHorizontalLine();
     }
+
+    /**
+     * Deletes a task from the task list.
+     *
+     * @param taskNumber The number of the task to be deleted.
+     * @param taskList   The list of tasks.
+     * @throws DukeException If there is an error while saving tasks to file.
+     */
     public static void deleteTask(int taskNumber, ArrayList<Task> taskList) throws DukeException {
         if (isValidTaskNumber(taskNumber, taskList)) {
             Task deletedTask = taskList.remove(taskNumber - 1);
@@ -47,9 +77,24 @@ public class TaskList {
             System.out.println("    Fool! That task number is beyond the realm of your pitiful list!");
         }
     }
+
+    /**
+     * Checks if the task number is valid.
+     *
+     * @param taskNumber The task number to be checked.
+     * @param taskList   The list of tasks.
+     * @return True if the task number is valid, false otherwise.
+     */
     public static boolean isValidTaskNumber(int taskNumber, ArrayList<Task> taskList) {
         return taskNumber > 0 && taskNumber <= taskList.size();
     }
+
+    /**
+     * Marks a task as done.
+     *
+     * @param taskNumber The number of the task to be marked as done.
+     * @throws DukeException If there is an error while saving tasks to file.
+     */
     public static void markTaskAsDone(int taskNumber) throws DukeException {
         if (TaskList.isValidTaskNumber(taskNumber, TaskList.taskList)) {
             Task task = TaskList.taskList.get(taskNumber - 1);
@@ -64,6 +109,13 @@ public class TaskList {
             System.out.println("    Fool! That task number is beyond the realm of your pitiful list!");
         }
     }
+
+    /**
+     * Unmarks a task as done.
+     *
+     * @param taskNumber The number of the task to be unmarked as done.
+     * @throws DukeException If there is an error while saving tasks to file.
+     */
     public static void unmarkTaskAsDone(int taskNumber) throws DukeException {
         if (TaskList.isValidTaskNumber(taskNumber, TaskList.taskList)) {
             Task task = TaskList.taskList.get(taskNumber - 1);
@@ -78,6 +130,12 @@ public class TaskList {
             System.out.println("    You dare invoke the invalid task number? Pathetic!");
         }
     }
+
+    /**
+     * Finds tasks containing a specific keyword and displays them.
+     *
+     * @param keyword The keyword to search for in task descriptions.
+     */
 
     public static void findTasksByKeyword(String keyword) {
         boolean found = false;
@@ -96,6 +154,13 @@ public class TaskList {
         }
     }
 
+    /**
+     * Postpones the due date of a task.
+     *
+     * @param taskNumber       The number of the task to be postponed.
+     * @param newDueDateTime   The new due date and time.
+     * @throws DukeException   If there is an error while saving tasks to file.
+     */
     public static void postponeTask(int taskNumber, LocalDateTime newDueDateTime) throws DukeException {
         if (isValidTaskNumber(taskNumber, taskList)) {
             Task task = taskList.get(taskNumber - 1);
