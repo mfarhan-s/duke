@@ -11,10 +11,10 @@ import duke.task.TaskList;
  */
 public class Duke {
     /**
-     * The main method to start the Duke application.
+     * Entry point for starting the Duke application.
      *
-     * @param args The command-line arguments passed to the program.
-     * @throws DukeException If there is an error while running Duke.
+     * @param args Command-line arguments passed to the program (not used).
+     * @throws DukeException If an error occurs during the execution of Duke.
      */
     public static void main(String[] args) throws DukeException {
         TaskList.readTasksFromFile();
