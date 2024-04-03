@@ -138,18 +138,18 @@ public class TaskList {
      */
 
     public static void findTasksByKeyword(String keyword) {
-        boolean found = false;
+        boolean isFound = false;
         int count = 1;
         for (Task task : TaskList.taskList) {
             if (task.getDescription().toLowerCase().contains(keyword.toLowerCase())) {
-                if (!found) {
+                if (!isFound) {
                     System.out.println("    Tasks containing keyword '" + keyword + "':");
-                    found = true;
+                    isFound = true;
                 }
                 System.out.println("        " + count++ + ". " + task);
             }
         }
-        if (!found) {
+        if (!isFound) {
             System.out.println("    No tasks containing keyword '" + keyword + "' found.");
         }
     }
