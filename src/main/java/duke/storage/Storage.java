@@ -9,6 +9,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.time.LocalDateTime;
 import java.io.IOException;
@@ -126,11 +127,11 @@ public class Storage {
     }
 
     /**
-     * Converts a string representation from the file to a task object.
+     * Parses the given file string and creates a corresponding Task object.
      *
-     * @param fileString The string representation from the file.
-     * @return The task object created from the string representation.
-     * @throws DukeException If there is an error while converting the string to task.
+     * @param fileString The string representation of the task in the file.
+     * @return The Task object created from the file string.
+     * @throws DukeException If the file string has an invalid format or an unknown task type.
      */
     private static Task fileStringToTask(String fileString) throws DukeException {
         String[] fields = fileString.split(" \\| ");
@@ -144,45 +145,78 @@ public class Storage {
 
         switch (taskType) {
             case 'T':
-                ToDo todo = new ToDo(description);
-                if (isDone) {
-                    todo.markAsDone();
-                }
-                return todo;
+                return createToDoTask(description, isDone);
             case 'D':
-                if (fields.length < 4) {
-                    System.err.println("Invalid deadline format: " + fileString);
-                    return null;
-                }
-                String byDateTimeString = fields[3];
-                LocalDateTime byDateTime = DateTimeParser.parseDateTime(byDateTimeString);
-                Deadline deadline = new Deadline(description, byDateTime);
-                if (isDone) {
-                    deadline.markAsDone();
-                }
-                return deadline;
+                return createDeadlineTask(description, fields, isDone);
             case 'E':
-                if (fields.length < 4) {
-                    System.err.println("Invalid event format: " + fileString);
-                    return null;
-                }
-                String[] fromTo = fields[3].split(" - ");
-                if (fromTo.length != 2) {
-                    System.err.println("Invalid event format: " + fileString);
-                    return null;
-                }
-                String fromDateTimeString = fromTo[0];
-                String toDateTimeString = fromTo[1];
-                LocalDateTime fromDateTime = DateTimeParser.parseDateTime(fromDateTimeString);
-                LocalDateTime toDateTime = DateTimeParser.parseDateTime(toDateTimeString);
-                Event event = new Event(description, fromDateTime, toDateTime);
-
-                if (isDone) {
-                    event.markAsDone();
-                }
-                return event;
+                return createEventTask(description, fields, isDone);
             default:
                 throw new DukeException("Unknown task type: " + taskType);
         }
+    }
+
+    /**
+     * Creates a ToDo task based on the provided description and done status.
+     *
+     * @param description The description of the ToDo task.
+     * @param isDone      True if the task is marked as done, false otherwise.
+     * @return The created ToDo task.
+     */
+    private static ToDo createToDoTask(String description, boolean isDone) {
+        ToDo todo = new ToDo(description);
+        if (isDone) {
+            todo.markAsDone();
+        }
+        return todo;
+    }
+
+    /**
+     * Creates a Deadline task based on the provided description, fields, and done status.
+     *
+     * @param description The description of the Deadline task.
+     * @param fields      The fields extracted from the file string.
+     * @param isDone      True if the task is marked as done, false otherwise.
+     * @return The created Deadline task.
+     * @throws DukeException If the fields have an invalid format.
+     */
+    private static Deadline createDeadlineTask(String description, String[] fields, boolean isDone) throws DukeException {
+        if (fields.length < 4) {
+            throw new DukeException("Invalid deadline format: " + Arrays.toString(fields));
+        }
+        String byDateTimeString = fields[3];
+        LocalDateTime byDateTime = DateTimeParser.parseDateTime(byDateTimeString);
+        Deadline deadline = new Deadline(description, byDateTime);
+        if (isDone) {
+            deadline.markAsDone();
+        }
+        return deadline;
+    }
+
+    /**
+     * Creates an Event task based on the provided description, fields, and done status.
+     *
+     * @param description The description of the Event task.
+     * @param fields      The fields extracted from the file string.
+     * @param isDone      True if the task is marked as done, false otherwise.
+     * @return The created Event task.
+     * @throws DukeException If the fields have an invalid format.
+     */
+    private static Event createEventTask(String description, String[] fields, boolean isDone) throws DukeException {
+        if (fields.length < 4) {
+            throw new DukeException("Invalid event format: " + Arrays.toString(fields));
+        }
+        String[] fromTo = fields[3].split(" - ");
+        if (fromTo.length != 2) {
+            throw new DukeException("Invalid event format: " + Arrays.toString(fields));
+        }
+        String fromDateTimeString = fromTo[0];
+        String toDateTimeString = fromTo[1];
+        LocalDateTime fromDateTime = DateTimeParser.parseDateTime(fromDateTimeString);
+        LocalDateTime toDateTime = DateTimeParser.parseDateTime(toDateTimeString);
+        Event event = new Event(description, fromDateTime, toDateTime);
+        if (isDone) {
+            event.markAsDone();
+        }
+        return event;
     }
 }
