@@ -75,6 +75,6 @@ public class Task {
      * @param task The task whose user command is echoed.
      */
     public static void echoUserCommand(Task task) {
-        System.out.println("    A foolish command, mortal! You dare to utter:\n      " + task.toString());
+        System.out.println("    A foolish command, mortal! You dare to utter:\n        " + TaskList.taskList.size() + ". " + task.toString());
     }
 }

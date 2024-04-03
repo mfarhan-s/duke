@@ -39,6 +39,8 @@ public class TaskList {
      * @throws DukeException If there is an error while saving tasks to file.
      */
     public static void addTask(Task task) throws DukeException {
+        assert task != null : "Task to be added should not be null";
+
         taskList.add(task);
         Task.echoUserCommand(task);
         System.out.println("    Now you have " + taskList.size() + " task(s) in your list.");
@@ -68,10 +70,13 @@ public class TaskList {
      * @throws DukeException If there is an error while saving tasks to file.
      */
     public static void deleteTask(int taskNumber, ArrayList<Task> taskList) throws DukeException {
+        assert taskList != null : "Task list should not be null";
+        assert isValidTaskNumber(taskNumber, taskList) : "Invalid task number";
+
         if (isValidTaskNumber(taskNumber, taskList)) {
             Task deletedTask = taskList.remove(taskNumber - 1);
             Storage.saveTasksToFile(TaskList.taskList);
-            System.out.println("    Witness the eradication of this feeble task:\n      " + deletedTask.toString());
+            System.out.println("    Witness the eradication of this feeble task:\n      " + taskNumber + ". " + deletedTask.toString());
             System.out.println("    Now you have " + taskList.size() + " task(s) in the list. Tremble!");
         } else {
             System.out.println("    Fool! That task number is beyond the realm of your pitiful list!");
@@ -100,10 +105,10 @@ public class TaskList {
             Task task = TaskList.taskList.get(taskNumber - 1);
             if (!task.isDone()) {
                 task.markAsDone();
-                System.out.println("    Hmph! I've smitten this task from the list:\n      " + task);
+                System.out.println("    Hmph! I've smitten this task from the list:\n      " + taskNumber + ". " + task);
                 Storage.saveTasksToFile(TaskList.taskList);
             } else {
-                System.out.println("    Fool! This task has already been marked as done!\n      " + task);
+                System.out.println("    Fool! This task has already been marked as done!\n      " + taskNumber + ". " + task);
             }
         } else {
             System.out.println("    Fool! That task number is beyond the realm of your pitiful list!");
@@ -121,10 +126,10 @@ public class TaskList {
             Task task = TaskList.taskList.get(taskNumber - 1);
             if (task.isDone()) {
                 task.unmarkAsDone();
-                System.out.println("    Bah! I've restored this task to its pathetic existence:\n      " + task);
+                System.out.println("    Bah! I've restored this task to its pathetic existence:\n      " + taskNumber + ". " + task);
                 Storage.saveTasksToFile(TaskList.taskList);
             } else {
-                System.out.println("    Fool! This task is already in its wretched, incomplete state!\n      " + task);
+                System.out.println("    Fool! This task is already in its wretched, incomplete state!\n      " + taskNumber + ". " + task);
             }
         } else {
             System.out.println("    You dare invoke the invalid task number? Pathetic!");
@@ -136,23 +141,23 @@ public class TaskList {
      *
      * @param keyword The keyword to search for in task descriptions.
      */
-
     public static void findTasksByKeyword(String keyword) {
         boolean isFound = false;
-        int count = 1;
-        for (Task task : TaskList.taskList) {
+        for (int i = 0; i < TaskList.taskList.size(); i++) {
+            Task task = TaskList.taskList.get(i);
             if (task.getDescription().toLowerCase().contains(keyword.toLowerCase())) {
                 if (!isFound) {
                     System.out.println("    Tasks containing keyword '" + keyword + "':");
                     isFound = true;
                 }
-                System.out.println("        " + count++ + ". " + task);
+                System.out.println("        " + (i + 1) + ". " + task);
             }
         }
         if (!isFound) {
             System.out.println("    No tasks containing keyword '" + keyword + "' found.");
         }
     }
+
 
     /**
      * Postpones the due date of a task.
@@ -162,6 +167,9 @@ public class TaskList {
      * @throws DukeException   If there is an error while saving tasks to file.
      */
     public static void postponeTask(int taskNumber, LocalDateTime newDueDateTime) throws DukeException {
+        assert taskList != null : "Task list should not be null";
+        assert isValidTaskNumber(taskNumber, taskList) : "Invalid task number";
+
         if (isValidTaskNumber(taskNumber, taskList)) {
             Task task = taskList.get(taskNumber - 1);
             if (task instanceof Deadline) {

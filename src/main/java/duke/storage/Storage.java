@@ -31,6 +31,8 @@ public class Storage {
      * @throws DukeException If there is an error while saving tasks to the file.
      */
     public static void saveTasksToFile(ArrayList<Task> taskList) throws DukeException {
+        assert taskList != null : "Task list must not be null";
+
         try {
             Path filePath = Paths.get(FILE_PATH);
             createDirectoriesIfNeeded(filePath);
@@ -76,6 +78,8 @@ public class Storage {
      * @throws DukeException If there is an error while creating directories.
      */
     private static void createDirectoriesIfNeeded(Path filePath) throws DukeException {
+        assert filePath != null : "File path must not be null";
+
         Path directoryPath = filePath.getParent();
         if (!Files.exists(directoryPath)) {
             try {
@@ -93,6 +97,8 @@ public class Storage {
      * @throws DukeException If there is an error while creating the file.
      */
     private static void createFileIfNeeded(Path filePath) throws DukeException {
+        assert filePath != null : "File path must not be null";
+
         if (!Files.exists(filePath)) {
             try {
                 Files.createFile(filePath);
@@ -110,6 +116,8 @@ public class Storage {
      * @throws DukeException If there is an error while converting the task to string.
      */
     private static String taskToFileString(Task task) throws DukeException {
+        assert task != null : "Task must not be null";
+
         if (task instanceof ToDo) {
             return String.format("T | %d | %s", task.isDone() ? 1 : 0, task.getDescription());
         } else if (task instanceof Deadline) {
@@ -134,6 +142,8 @@ public class Storage {
      * @throws DukeException If the file string has an invalid format or an unknown task type.
      */
     private static Task fileStringToTask(String fileString) throws DukeException {
+        assert fileString != null : "File string must not be null";
+
         String[] fields = fileString.split(" \\| ");
         if (fields.length < 3) {
             throw new DukeException("Invalid task format: " + fileString);
@@ -180,6 +190,9 @@ public class Storage {
      * @throws DukeException If the fields have an invalid format.
      */
     private static Deadline createDeadlineTask(String description, String[] fields, boolean isDone) throws DukeException {
+        assert description != null : "Description must not be null";
+        assert fields != null : "Fields must not be null";
+
         if (fields.length < 4) {
             throw new DukeException("Invalid deadline format: " + Arrays.toString(fields));
         }
@@ -202,6 +215,9 @@ public class Storage {
      * @throws DukeException If the fields have an invalid format.
      */
     private static Event createEventTask(String description, String[] fields, boolean isDone) throws DukeException {
+        assert description != null : "Description must not be null";
+        assert fields != null : "Fields must not be null";
+
         if (fields.length < 4) {
             throw new DukeException("Invalid event format: " + Arrays.toString(fields));
         }
