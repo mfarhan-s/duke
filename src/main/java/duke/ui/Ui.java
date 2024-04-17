@@ -17,7 +17,7 @@ public class Ui {
     /**
      * Greets the user with a welcoming message.
      */
-    public static void greetUser() {
+    public void greetUser() {
         System.out.println("    Greetings, mortal! I am Balrog, the fiery demon.");
         System.out.println("    What foolish commands do you wish to utter?");
         printHorizontalLine();
@@ -28,7 +28,7 @@ public class Ui {
      *
      * @throws DukeException If there is an error while saving tasks to file.
      */
-    public static void sayGoodbye() throws DukeException {
+    public void sayGoodbye() throws DukeException {
         Storage.saveTasksToFile(TaskList.taskList);
         displayMessage("    Flee, mortal! Until our paths cross again!");
         printHorizontalLine();

@@ -23,7 +23,7 @@ public class TaskList {
      *
      * @throws DukeException If there is an error while reading tasks from the file.
      */
-    public static void readTasksFromFile() throws DukeException {
+    public void readTasksFromFile() throws DukeException {
         ArrayList<Task> loadedTasks = Storage.loadTasksFromFile();
         if (!loadedTasks.isEmpty()) {
             taskList.addAll(loadedTasks);

@@ -8,7 +8,6 @@ import java.time.LocalDateTime;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class DateTimeParserTest {
-
     @Test
     public void testParseDateTime_validDateTime_success() throws DukeException {
         String dateTimeString = "21/04/2024 1200";

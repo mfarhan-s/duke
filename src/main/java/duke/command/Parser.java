@@ -223,7 +223,7 @@ public class Parser {
     /**
      * Runs the Duke application by taking user input and executing commands until the user exits.
      */
-    public static void runDuke() {
+    public void runDuke() {
         String userInput;
         Scanner in = new Scanner(System.in);
 
