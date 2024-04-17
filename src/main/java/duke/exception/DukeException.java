@@ -91,7 +91,7 @@ public class DukeException extends Exception {
      *
      * @return The DukeException for an invalid 'postpone' format.
      */
-    public static DukeException invalidSnoozeFormat() {
+    public static DukeException invalidPostponeFormat() {
         return new DukeException("Invalid 'postpone' format");
     }
 }

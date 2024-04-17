@@ -208,15 +208,22 @@ public class Parser {
         if (commandParts.length > 2) {
             try {
                 int taskNumber = Integer.parseInt(commandParts[1]);
+                if (!TaskList.isValidTaskNumber(taskNumber, TaskList.taskList)) {
+                    DukeException.handleGracefulError(DukeException.invalidTaskNumber());
+                }
                 LocalDateTime newDueDateTime = DateTimeParser.parseDateTime(commandParts[2]);
-                TaskList.postponeTask(taskNumber, newDueDateTime);
+                if (newDueDateTime.isBefore(LocalDateTime.now())) {
+                    DukeException.handleGracefulError(DukeException.invalidDateTimeFormat());
+                } else {
+                    TaskList.postponeTask(taskNumber, newDueDateTime);
+                }
             } catch (NumberFormatException e) {
                 DukeException.handleGracefulError(DukeException.invalidTaskNumber());
             } catch (DukeException e) {
                 throw new DukeException("Error: " + e.getMessage());
             }
         } else {
-            DukeException.handleGracefulError(DukeException.invalidSnoozeFormat());
+            DukeException.handleGracefulError(DukeException.invalidPostponeFormat());
         }
     }
 
