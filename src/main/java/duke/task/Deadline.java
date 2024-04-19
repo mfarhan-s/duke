@@ -6,8 +6,6 @@ import duke.exception.DukeException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-// enter format as "deadline <description> /by <dd/mm/yyyy HHmm>"
-// deadline pay bills /by 21/4/2024 1200
 /**
  * Represents a deadline task with a description and a due date and time.
  */
@@ -68,7 +66,7 @@ public class Deadline extends Task {
             LocalDateTime byDateTime = DateTimeParser.parseDateTime(byDateTimeString);
 
             if (byDateTime.isBefore(LocalDateTime.now())) {
-                throw new DukeException("Deadline has to be in the future");
+                throw DukeException.invalidDateTime();
             }
 
             if (deadlineDescription.isEmpty() || byDateTimeString.isEmpty()) {

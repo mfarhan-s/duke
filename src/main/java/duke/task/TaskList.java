@@ -56,7 +56,7 @@ public class TaskList {
         } else {
             System.out.println("    ======= Scroll of Puny Tasks =======");
             for (int i = 0; i < taskList.size(); i++) {
-                System.out.println("        " + (i + 1) + ". " + taskList.get(i));
+                System.out.println("         " + (i + 1) + ". " + taskList.get(i));
             }
         }
         Ui.printHorizontalLine();
@@ -76,7 +76,7 @@ public class TaskList {
         if (isValidTaskNumber(taskNumber, taskList)) {
             Task deletedTask = taskList.remove(taskNumber - 1);
             Storage.saveTasksToFile(TaskList.taskList);
-            System.out.println("    Witness the eradication of this feeble task:\n      " + taskNumber + ". " + deletedTask.toString());
+            System.out.println("    Witness the eradication of this feeble task:\n         " + taskNumber + ". " + deletedTask.toString());
             System.out.println("    Now you have " + taskList.size() + " task(s) in the list. Tremble!");
         } else {
             System.out.println("    Fool! That task number is beyond the realm of your pitiful list!");
@@ -105,10 +105,10 @@ public class TaskList {
             Task task = TaskList.taskList.get(taskNumber - 1);
             if (!task.isDone()) {
                 task.markAsDone();
-                System.out.println("    Hmph! I've smitten this task from the list:\n      " + taskNumber + ". " + task);
+                System.out.println("    Hmph! I've smitten this task from the list:\n         " + taskNumber + ". " + task);
                 Storage.saveTasksToFile(TaskList.taskList);
             } else {
-                System.out.println("    Fool! This task has already been marked as done!\n      " + taskNumber + ". " + task);
+                System.out.println("    Fool! This task has already been marked as done!\n         " + taskNumber + ". " + task);
             }
         } else {
             System.out.println("    Fool! That task number is beyond the realm of your pitiful list!");
@@ -172,11 +172,13 @@ public class TaskList {
 
         if (isValidTaskNumber(taskNumber, taskList)) {
             Task task = taskList.get(taskNumber - 1);
-            if (task instanceof Deadline) {
+            if (task instanceof ToDo) {
+                DukeException.handleGracefulError(DukeException.invalidPostponeTaskType());
+            } else if (task instanceof Deadline) {
                 Deadline deadlineTask = (Deadline) task;
                 deadlineTask.setBy(newDueDateTime);
-                System.out.println("    Task has been postponed successfully:\n" +
-                                   "   " + taskNumber + ". " + deadlineTask);
+                System.out.println("    Deadline Task has been postponed successfully:\n" +
+                                   "        " + taskNumber + ". " + deadlineTask);
                 Storage.saveTasksToFile(taskList);
             } else if (task instanceof Event) {
                 Event eventTask = (Event) task;
@@ -194,7 +196,7 @@ public class TaskList {
                 eventTask.setToDateTime(newEndDateTime);
 
                 System.out.println("    Event task has been postponed successfully:\n" +
-                                   "   " + taskNumber + ". " + eventTask);
+                                   "        " + taskNumber + ". " + eventTask);
                 Storage.saveTasksToFile(taskList);
             }
         }

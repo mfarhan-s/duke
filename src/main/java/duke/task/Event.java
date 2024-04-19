@@ -6,7 +6,6 @@ import duke.exception.DukeException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-// enter format as "event <description> /from <dd/mm/yyyy HHmm> /to <dd/mm/yyyy HHmm>"
 /**
  * Represents an event task with a description and a duration.
  */
@@ -101,7 +100,7 @@ public class Event extends Task {
             }
 
             if (fromDateTime.isBefore(LocalDateTime.now())) {
-                throw new DukeException("Start time must be in the future");
+                throw DukeException.invalidDateTime();
             }
 
             return new Event(eventDescription, fromDateTime, toDateTime);

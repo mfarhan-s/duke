@@ -92,6 +92,14 @@ public class DukeException extends Exception {
      * @return The DukeException for an invalid 'postpone' format.
      */
     public static DukeException invalidPostponeFormat() {
-        return new DukeException("Invalid 'postpone' format");
+        return new DukeException("Enter task number with date and time in the correct format: postpone <taskNumber> dd/mm/yyyy HHmm");
+    }
+
+    public static DukeException invalidPostponeTaskType() {
+        return new DukeException("You ignorant fool! You can only postpone 'deadline' or 'event' tasks!");
+    }
+
+    public static DukeException invalidDateTime() {
+        return new DukeException("Date and Time has to be in the future!");
     }
 }
