@@ -136,8 +136,6 @@ public class Parser {
             Deadline deadlineTask = Deadline.createDeadlineFromCommand(command);
             if (deadlineTask != null) {
                 TaskList.addTask(deadlineTask);
-            } else {
-                DukeException.handleGracefulError(DukeException.invalidDeadlineFormat());
             }
         } else {
             DukeException.handleGracefulError(DukeException.invalidDeadlineFormat());
@@ -156,8 +154,6 @@ public class Parser {
             Event eventTask = Event.createEventFromCommand(command);
             if (eventTask != null) {
                 TaskList.addTask(eventTask);
-            } else {
-                DukeException.handleGracefulError(DukeException.invalidEventFormat());
             }
         } else {
             DukeException.handleGracefulError(DukeException.invalidEventFormat());
